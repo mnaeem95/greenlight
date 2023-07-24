@@ -67,6 +67,21 @@ func (app *application) invalidAuthenticationTokenResponse(w http.ResponseWriter
 	app.errorResponse(w, r, http.StatusUnauthorized, message)
 }
 
+func (app *application) authenticationRequiredResponse(w http.ResponseWriter, r *http.Request) {
+	message := "you must be authenticated to access this resource"
+	app.errorResponse(w, r, http.StatusUnauthorized, message)
+}
+
+func (app *application) inactiveAccountResponse(w http.ResponseWriter, r *http.Request) {
+	message := "your user account must be activated to access this resource"
+	app.errorResponse(w, r, http.StatusForbidden, message)
+}
+
+func (app *application) notPermittedResponse(w http.ResponseWriter, r *http.Request) {
+	message := "your user account doesn't have the necessary permissions to access this resource"
+	app.errorResponse(w, r, http.StatusForbidden, message)
+}
+
 // The methodNotAllowedResponse() method will be used to send a 405 Method Not Allowed status code and JSON response to the client.
 func (app *application) methodNotAllowedResponse(w http.ResponseWriter, r *http.Request) {
 	message := fmt.Sprintf("the %s method is not supported for this resource", r.Method)
