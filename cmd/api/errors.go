@@ -56,6 +56,17 @@ func (app *application) rateLimitExceededResponse(w http.ResponseWriter, r *http
 	app.errorResponse(w, r, http.StatusTooManyRequests, message)
 }
 
+func (app *application) invalidCredentialsResponse(w http.ResponseWriter, r *http.Request) {
+	message := "invalid authentication credentials"
+	app.errorResponse(w, r, http.StatusUnauthorized, message)
+}
+
+func (app *application) invalidAuthenticationTokenResponse(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("WWW-Authenticate", "Bearer")
+	message := "invalid or missing authentication token"
+	app.errorResponse(w, r, http.StatusUnauthorized, message)
+}
+
 // The methodNotAllowedResponse() method will be used to send a 405 Method Not Allowed status code and JSON response to the client.
 func (app *application) methodNotAllowedResponse(w http.ResponseWriter, r *http.Request) {
 	message := fmt.Sprintf("the %s method is not supported for this resource", r.Method)
